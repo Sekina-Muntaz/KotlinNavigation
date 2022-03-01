@@ -1,7 +1,7 @@
 package com.example.newsapp
 
 import android.os.Build
-import com.example.newsapp.model.NewsData
+import com.example.newsapp.models.NewsData
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -79,9 +79,9 @@ object MockData {
     {
         val date=
             if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.N){
-                SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss z", Locale.ENGLISH).parse(publishedAt)!!
+                SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss z", Locale.US).parse(publishedAt)!!
             }else{
-                java.text.SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss z", Locale.ENGLISH).parse(publishedAt)!!
+                java.text.SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss z", Locale.US).parse(publishedAt)!!
             }
         return date
     }

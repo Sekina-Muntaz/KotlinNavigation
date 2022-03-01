@@ -5,7 +5,6 @@ import androidx.compose.foundation.ScrollState
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.Button
 import androidx.compose.material.Icon
 import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
@@ -15,23 +14,26 @@ import androidx.compose.material.icons.filled.Edit
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.colorResource
+import androidx.compose.ui.res.imageResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
-import com.example.newsapp.MockData
-import com.example.newsapp.MockData.getTimeAgo
 import com.example.newsapp.R
 
 import com.example.newsapp.component.TopAppBar
-import com.example.newsapp.model.NewsData
+import com.example.newsapp.models.NewsData
+import com.example.newsapp.models.TopNewsArticle
+import com.skydoves.landscapist.coil.CoilImage
 
 @Composable
-fun DetailScreen(scrollState: ScrollState,newsData: NewsData,navController: NavController){
+fun DetailScreen(scrollState: ScrollState,article: TopNewsArticle,navController: NavController){
     Scaffold(topBar ={
         TopAppBar(onBackPressed = {navController.popBackStack()})
     } )
@@ -43,18 +45,24 @@ fun DetailScreen(scrollState: ScrollState,newsData: NewsData,navController: NavC
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Text(text = "Detail Screen", fontWeight = FontWeight.SemiBold)
-            Image(painter = painterResource(id = R.drawable.breaking_news), contentDescription = "")
+            CoilImage(
+                imageModel = article.urlToImage,
+                contentScale = ContentScale.Crop,
+                error = ImageBitmap.imageResource(R.drawable.breaking_news),
+                placeHolder = ImageBitmap.imageResource(R.drawable.breaking_news)
+            )
+//            Image(painter = painterResource(id = R.drawable.breaking_news), contentDescription = "")
             Row(modifier = Modifier
                 .fillMaxWidth()
                 .padding(8.dp),
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
-                InfoWithIcon(icon = Icons.Default.Edit, info =newsData.author )
-                InfoWithIcon(icon = Icons.Default.DateRange, info =newsData.PublishedAt )
+                InfoWithIcon(icon = Icons.Default.Edit, info =article.author?:"Not Available")
+                InfoWithIcon(icon = Icons.Default.DateRange, info =article.publishedAt!! )
 
             }
-            Text(text = newsData.title, fontWeight = FontWeight.Bold)
-            Text(text = newsData.description, modifier = Modifier.padding(top=16.dp))
+            Text(text = article.title!!, fontWeight = FontWeight.Bold)
+            Text(text = article.description!!, modifier = Modifier.padding(top=16.dp))
 //        Button(onClick = {
 //            navController.popBackStack()
 //        }) {
@@ -82,21 +90,21 @@ fun InfoWithIcon(icon: ImageVector,info:String){
 
 
 
-@Preview(showBackground = true)
-@Composable
-fun DetailScreenPreview(){
-    DetailScreen(
-        rememberScrollState(),
+//@Preview(showBackground = true)
+//@Composable
+//fun DetailScreenPreview(){
+//    DetailScreen(
+//        rememberScrollState(),
+//
+//        NewsData(
+//            1,
+//            "News title something catchy",
+//            R.drawable.breaking_news,
+//
+//            "Lorem Ipsum",
+//            "Lorem Ipsum sic donec",
+//            "2021-11-04T4: 42:40Z"),
+//        rememberNavController()
+//    )
 
-        NewsData(
-            1,
-            "News title something catchy",
-            R.drawable.breaking_news,
-
-            "Lorem Ipsum",
-            "Lorem Ipsum sic donec",
-            "2021-11-04T4: 42:40Z"),
-        rememberNavController()
-    )
-
-}
+//}
